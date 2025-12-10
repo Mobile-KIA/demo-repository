@@ -24,5 +24,3 @@
         @endforeach
     </div>
 @endsection
-
-//testing
