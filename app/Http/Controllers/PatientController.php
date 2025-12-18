@@ -40,7 +40,7 @@ class PatientController extends Controller
         Patient::create($validated);
 
         return redirect()
-            ->route('dashboard.tenaga_medis')
+            ->route('dashboard.tenagamedis')
             ->with('success', 'Data pasien berhasil ditambahkan');
     }
 
@@ -83,4 +83,19 @@ class PatientController extends Controller
             ->route('pasien.show', $patient->id)
             ->with('success', 'Data pasien berhasil diperbarui');
     }
+    public function destroy($id)
+{
+    // 1. Cari data berdasarkan ID, jika tidak ketemu akan error 404
+    $patient = Patient::findOrFail($id);
+
+    // 2. (Opsional) Hapus data relasi jika perlu (misal: data kehamilan)
+    // $patient->kehamilans()->delete(); 
+
+    // 3. Hapus data pasien
+    $patient->delete();
+
+    // 4. Kembali ke halaman index dengan pesan sukses
+    return redirect()->route('pasien.index')
+        ->with('success', 'Data pasien berhasil dihapus!');
+}
 }

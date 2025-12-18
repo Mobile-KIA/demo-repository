@@ -61,7 +61,7 @@ class AuthController extends Controller
             }
 
             if (Auth::user()->role === 'Tenaga Medis') {
-                return redirect()->route('dashboard.tenaga_medis');
+                return redirect()->route('dashboard.tenagamedis');
             }
         }
 

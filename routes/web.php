@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PregnancyController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,11 +50,15 @@ Route::middleware('auth')->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::get('/dashboard/tenagamedis', [DashboardController::class, 'tenagaMedis'])
-        ->name('dashboard.tenaga_medis');
+        ->name('dashboard.tenagamedis');
 
+
+        // Di dalam group middleware 'auth'
+
+    Route::get('/rekam-medis', function () {return view('rm.index'); })->name('rm.index');
     /*
     |--------------------------------------------------------------------------
-    | PASIEN (TENAGA MEDIS)
+    | PASIEN (TENAGA MEDIS)     
     |--------------------------------------------------------------------------
     */
     Route::prefix('medis/pasien')->group(function () {
@@ -63,6 +68,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}', [PatientController::class, 'show'])->name('pasien.show');
         Route::get('/{id}/edit', [PatientController::class, 'edit'])->name('pasien.edit');
         Route::post('/{id}/update', [PatientController::class, 'update'])->name('pasien.update');
+        Route::delete('/{id}', [PatientController::class, 'destroy'])->name('pasien.destroy');
     });
 
     /*
@@ -78,5 +84,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit/{id}', [PregnancyController::class, 'edit'])->name('kehamilan.edit');
         Route::post('/update/{id}', [PregnancyController::class, 'update'])->name('kehamilan.update');
     });
+
+    // --- ROUTE PROFILE ---
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 
 });
