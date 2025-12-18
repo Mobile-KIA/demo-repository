@@ -6,79 +6,71 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
-    // ================================
+    // =========================
     // FORM REGISTER
-    // ================================
+    // =========================
     public function registerForm()
     {
-        return view('register');
+        return view('auth.register');
     }
 
-    // ================================
+    // =========================
     // PROSES REGISTER
-    // ================================
+    // =========================
     public function register(Request $request)
     {
-        // Validasi input
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:4',
-            'role' => 'required'
+            'name'     => 'required',
+            'email'    => 'required|email|unique:users,email',
+            'password' => 'required|min:5',
+            'role'     => 'required'
         ]);
 
-        // Simpan user
         User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'role' => $request->role
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'role'     => $request->role,
+            'password' => Hash::make($request->password),
         ]);
 
-        // Redirect ke login dengan notifikasi
-        return redirect('/login')->with('success', 'Registrasi berhasil, silakan login.');
+        return redirect('/login')->with('success', 'Registrasi berhasil');
     }
 
-    // ================================
+    // =========================
     // FORM LOGIN
-    // ================================
+    // =========================
     public function loginForm()
     {
-        return view('login');
+        return view('auth.login');
     }
 
-    // ================================
-    // PROSES LOGIN
-    // ================================
+    // =========================
+    // PROSES LOGIN (PAKAI NAMA)
+    // =========================
     public function login(Request $request)
-{
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
+    {
+        $credentials = $request->only('name', 'password');
 
-    if (auth()->attempt([
-        'email' => $request->email,
-        'password' => $request->password
-    ])) {
-        $user = auth()->user();
+        if (Auth::attempt($credentials)) {
 
-        return $user->role === 'Tenaga Medis'
-            ? redirect('/dashboard/tenagamedis')
-            : redirect('/dashboard/orangtua');
+            if (Auth::user()->role === 'Orang Tua') {
+                return redirect()->route('dashboard.orangtua');
+            }
+
+            if (Auth::user()->role === 'Tenaga Medis') {
+                return redirect()->route('dashboard.tenaga_medis');
+            }
+        }
+
+        return back()->with('error', 'Nama atau password salah');
     }
 
-    return back()->with('error', 'Email atau password salah.');
-}
-
-
-    // ================================
+    // =========================
     // LOGOUT
-    // ================================
+    // =========================
     public function logout()
     {
         Auth::logout();

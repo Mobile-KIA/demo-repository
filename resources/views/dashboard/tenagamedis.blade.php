@@ -1,26 +1,57 @@
-<!DOCTYPE html>
-<html>
+@extends('layout')
 
-<head>
-    <title>Dashboard Tenaga Medis</title>
-</head>
+@section('content')
+    <div class="container mt-4">
 
-<body>
+        <h3 class="fw-bold">Dashboard Tenaga Medis</h3>
+        <p>Kelola data pasien dan kehamilan</p>
 
-    @extends('layout')
+        <hr>
 
-    @section('content')
-        <div class="card-custom">
-            <h3>Dashboard Tenaga Medis</h3>
-            <p>Anda dapat menginput dan mengedit data kehamilan di sini.</p>
+        <a href="{{ route('pasien.create') }}" class="btn btn-primary mb-3">
+            + Tambah Pasien
+        </a>
 
-            <a href="" class="btn btn-success mt-3">Tambah Data Kehamilan</a>
-            <a href="#" class="btn btn-success mt-3">Input data kehamilan</a>
-            <a href="#" class="btn btn-success mt-3">Edit data pasien</a>
-            <a href="#" class="btn btn-success mt-3">Melihat informasi lengkap</a>
-        </div>
-    @endsection
+        @if ($patients->count() == 0)
+            <p class="text-muted">Belum ada data pasien</p>
+        @else
+            <table class="table table-bordered">
+                <thead class="table-success">
+                    <tr>
+                        <th>Nama</th>
+                        <th>NIK</th>
+                        <th>No Telp</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($patients as $patient)
+                        <tr>
+                            <td>{{ $patient->nama }}</td>
+                            <td>{{ $patient->nik }}</td>
+                            <td>{{ $patient->no_telp }}</td>
+                            <td>
+                                <a href="{{ route('pasien.show', $patient->id) }}" class="btn btn-info btn-sm">
+                                    Detail
+                                </a>
 
-</body>
+                                <a href="{{ route('pasien.edit', $patient->id) }}" class="btn btn-warning btn-sm">
+                                    Edit
+                                </a>
 
-</html>
+                                <a href="{{ route('kehamilan.index', $patient->id) }}" class="btn btn-success btn-sm">
+                                    Riwayat Kehamilan
+                                </a>
+
+                                <a href="{{ route('kehamilan.create', $patient->id) }}" class="btn btn-primary btn-sm">
+                                    + Tambah Data Kehamilan
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
+
+    </div>
+@endsection

@@ -3,51 +3,80 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PatientController;
+use App\Http\Controllers\PregnancyController;
 
-// =========================
-// ROOT (HOME)
-// =========================
+/*
+|--------------------------------------------------------------------------
+| ROOT
+|--------------------------------------------------------------------------
+*/
 Route::get('/', function () {
-    return redirect('/login');
+    return redirect()->route('login');
 });
 
-// =========================
-// REGISTER (PAKAI AuthController)
-// =========================
+/*
+|--------------------------------------------------------------------------
+| AUTH
+|--------------------------------------------------------------------------
+*/
 Route::get('/register', [AuthController::class, 'registerForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 
-// =========================
-// LOGIN (PAKAI LoginController SAJA)
-// =========================
-Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/login', [AuthController::class, 'loginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
 
-// =========================
-// DASHBOARD — BUTUH LOGIN
-// =========================
-Route::middleware(['auth'])->group(function () {
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // Dashboard Orang Tua
-    Route::middleware(['orang_tua'])->group(function () {
-        Route::get('/dashboardorangtua', [DashboardController::class, 'orangTua'])
-             ->name('dashboard.orangtua');
+/*
+|--------------------------------------------------------------------------
+| DASHBOARD (LOGIN REQUIRED)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->group(function () {
 
-        Route::get('/dashboard-ortu', function () {
-            return view('dashboard_ortu');
-        });
+    /*
+    |--------------------------------------------------------------------------
+    | DASHBOARD ORANG TUA
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/dashboard/orangtua', [DashboardController::class, 'orangTua'])
+        ->name('dashboard.orangtua');
+
+    /*
+    |--------------------------------------------------------------------------
+    | DASHBOARD TENAGA MEDIS
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/dashboard/tenagamedis', [DashboardController::class, 'tenagaMedis'])
+        ->name('dashboard.tenaga_medis');
+
+    /*
+    |--------------------------------------------------------------------------
+    | PASIEN (TENAGA MEDIS)
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('medis/pasien')->group(function () {
+        Route::get('/', [PatientController::class, 'index'])->name('pasien.index');
+        Route::get('/tambah', [PatientController::class, 'create'])->name('pasien.create');
+        Route::post('/simpan', [PatientController::class, 'store'])->name('pasien.store');
+        Route::get('/{id}', [PatientController::class, 'show'])->name('pasien.show');
+        Route::get('/{id}/edit', [PatientController::class, 'edit'])->name('pasien.edit');
+        Route::post('/{id}/update', [PatientController::class, 'update'])->name('pasien.update');
     });
 
-    // Dashboard Tenaga Medis
-    Route::middleware(['tenaga_medis'])->group(function () {
-        Route::get('/dashboardtenagamedis', [DashboardController::class, 'tenagaMedis'])
-             ->name('dashboard.tenaga_medis');
+    /*
+    |--------------------------------------------------------------------------
+    | DATA KEHAMILAN
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('kehamilan')->group(function () {
+        Route::get('/{patient_id}', [PregnancyController::class, 'index'])->name('kehamilan.index');
+        Route::get('/{patient_id}/tambah', [PregnancyController::class, 'create'])->name('kehamilan.create');
+        Route::post('/simpan', [PregnancyController::class, 'store'])->name('kehamilan.store');
 
-        Route::get('/dashboard-med', function () {
-            return view('dashboard_med');
-        });
+        Route::get('/edit/{id}', [PregnancyController::class, 'edit'])->name('kehamilan.edit');
+        Route::post('/update/{id}', [PregnancyController::class, 'update'])->name('kehamilan.update');
     });
 
 });

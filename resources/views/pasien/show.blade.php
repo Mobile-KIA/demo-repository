@@ -13,7 +13,7 @@
 
         <h5>Riwayat Kehamilan:</h5>
 
-        @foreach ($patient->pregnancies as $p)
+        @forelse ($patient->pregnancies as $p)
             <div class="border p-2 mb-2">
                 <b>Usia Kehamilan:</b> {{ $p->usia_kehamilan }} minggu<br>
                 <b>Berat:</b> {{ $p->berat_badan }} kg<br>
@@ -21,6 +21,8 @@
                 <b>Tekanan Darah:</b> {{ $p->tekanan_darah }}<br>
                 <b>Keluhan:</b> {{ $p->keluhan ?? '-' }}<br>
             </div>
-        @endforeach
+        @empty
+            <p class="text-muted">Belum ada data kehamilan</p>
+        @endforelse
     </div>
 @endsection

@@ -13,25 +13,25 @@ class LoginController extends Controller
     }
 
     public function login(Request $request)
-    {
-        $credentials = $request->only('name', 'password');
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        if (Auth::attempt($credentials)) {
+    if (auth()->attempt([
+        'email' => $request->email,
+        'password' => $request->password
+    ])) {
+        $user = auth()->user();
 
-            $user = Auth::user();
-
-            // Arahkan sesuai role
-            if ($user->role == 'Tenaga Medis') {
-                return redirect('/dashboardtenagamedis');
-            } else if ($user->role == 'Orang Tua') {
-                return redirect('/dashboardorangtua');
-            } else {
-                return redirect('/');
-            }
-        }
-
-        return back()->with('error', 'Nama atau Password salah');
+        return $user->role === 'Tenaga Medis'
+            ? redirect('/dashboard/tenagamedis')
+            : redirect('/dashboard/orangtua');
     }
+
+    return back()->with('error', 'Email atau password salah.');
+}
 
     public function logout()
     {
