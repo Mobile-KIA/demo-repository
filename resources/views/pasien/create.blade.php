@@ -22,6 +22,19 @@
                 <div class="card border-0 shadow-sm">
                     <div class="card-body p-4">
 
+                        {{-- CEK ERROR --}}
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        <form action="{{ route('pasien.store') }}" ...></form>
+
                         <form action="{{ route('pasien.store') }}" method="POST" autocomplete="off">
                             @csrf
 
@@ -49,13 +62,29 @@
                                     </div>
                                 </div>
 
+                                {{-- === TAMBAHAN BARU: INPUT EMAIL === --}}
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold">Email (Untuk Akun Login)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light-subtle"><i class="bi bi-envelope"></i></span>
+                                        <input type="email" name="email" class="form-control"
+                                            placeholder="contoh: ibu@gmail.com" required>
+                                    </div>
+                                    <div class="form-text text-primary">
+                                        <i class="bi bi-info-circle me-1"></i>
+                                        Email ini akan digunakan Orang Tua untuk login. Password default adalah
+                                        <strong>NIK</strong>.
+                                    </div>
+                                </div>
+
+                                {{-- GANTI BAGIAN INPUT UMUR DENGAN INI --}}
                                 <div class="col-md-4">
-                                    <label class="form-label fw-semibold">Umur</label>
+                                    <label class="form-label fw-semibold">Tanggal Lahir</label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-light-subtle"><i
-                                                class="bi bi-calendar3"></i></span>
-                                        <input type="number" name="umur" class="form-control" placeholder="0" required>
-                                        <span class="input-group-text bg-light-subtle">Tahun</span>
+                                                class="bi bi-calendar-event"></i></span>
+                                        {{-- Name harus 'tgl_lahir' agar sesuai dengan validasi controller --}}
+                                        <input type="date" name="tgl_lahir" class="form-control" required>
                                     </div>
                                 </div>
 

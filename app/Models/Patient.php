@@ -11,13 +11,16 @@ class Patient extends Model
 
     protected $table = 'patients';
 
-    protected $fillable = [
-        'nama',
-        'nik',
-        'umur',
-        'alamat',
-        'no_telp',
-    ];
+    // Tambahkan 'user_id' ke fillable/guarded
+    protected $guarded = [];
+
+    // protected $fillable = [
+    //     'nama',
+    //     'nik',
+    //     'umur',
+    //     'alamat',
+    //     'no_telp',
+    // ];
 
     public function kehamilans()
     {
@@ -29,5 +32,10 @@ class Patient extends Model
     public function children()
     {
         return $this->hasMany(Child::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -113,10 +113,10 @@
                                                 <span class="fw-bold text-info">{{ $growth->tinggi_badan }}</span> <small>cm</small>
                                             </div>
                                             @if($growth->lingkar_kepala)
-                                                <div>
-                                                    <span class="d-block text-muted" style="font-size: 0.7rem;">LINGKAR KEPALA</span>
-                                                    <span class="fw-bold">{{ $growth->lingkar_kepala }}</span> <small>cm</small>
-                                                </div>
+                                            <div>
+                                                <span class="d-block text-muted" style="font-size: 0.7rem;">LINGKAR KEPALA</span>
+                                                <span class="fw-bold">{{ $growth->lingkar_kepala }}</span> <small>cm</small>
+                                            </div>
                                             @endif
                                         </div>
                                     </div>
@@ -191,7 +191,7 @@
                                                 {{ $immune->catatan ?? '-' }}
                                             </span>
                                         </div>
-
+                                        
                                         <form action="{{ route('imunisasi.destroy', $immune->id) }}" method="POST"
                                             onsubmit="return confirm('Hapus data imunisasi ini?')">
                                             @csrf @method('DELETE')

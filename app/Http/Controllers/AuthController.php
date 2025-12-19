@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
     // =========================
-    // FORM REGISTER
+    // FORM REGISTER (UMUM)
     // =========================
     public function registerForm()
     {
@@ -23,20 +23,21 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name'     => 'required',
-            'email'    => 'required|email|unique:users,email',
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:5',
-            'role'     => 'required'
+            // Pastikan input role di view register sesuai value-nya ('medis' atau 'orangtua')
+            'role' => 'required',
         ]);
 
         User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'role'     => $request->role,
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role,
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect('/login')->with('success', 'Registrasi berhasil');
+        return redirect('/login')->with('success', 'Registrasi berhasil, silakan login.');
     }
 
     // =========================
@@ -48,32 +49,58 @@ class AuthController extends Controller
     }
 
     // =========================
-    // PROSES LOGIN (PAKAI NAMA)
+    // PROSES LOGIN (REVISI: PAKAI EMAIL)
     // =========================
     public function login(Request $request)
     {
-        $credentials = $request->only('name', 'password');
+        // 1. Validasi Input
+        $credentials = $request->validate([
+            'email' => ['required', 'email'], // Ubah 'name' jadi 'email'
+            'password' => ['required'],
+        ]);
 
+        // 2. Coba Login
         if (Auth::attempt($credentials)) {
 
-            if (Auth::user()->role === 'Orang Tua') {
+            // 3. Regenerate Session (Wajib untuk keamanan)
+            $request->session()->regenerate();
+
+            // 4. Cek Role & Redirect
+            // Pastikan penulisan string role SAMA PERSIS dengan di database
+            // Di PatientController kita pakai 'orangtua' (kecil semua, tanpa spasi)
+
+            $role = Auth::user()->role;
+
+            if ($role === 'orangtua') {
                 return redirect()->route('dashboard.orangtua');
             }
 
-            if (Auth::user()->role === 'Tenaga Medis') {
+            if ($role === 'medis' || $role === 'Tenaga Medis') {
+                // Handle dua kemungkinan penulisan biar aman
                 return redirect()->route('dashboard.tenagamedis');
             }
+
+            // Default redirect jika role lain (misal admin)
+            return redirect('/');
         }
 
-        return back()->with('error', 'Nama atau password salah');
+        // 5. Jika Gagal
+        return back()->withErrors([
+            'email' => 'Email atau password salah.',
+        ])->onlyInput('email');
     }
 
     // =========================
     // LOGOUT
     // =========================
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
+
+        // Invalidate session untuk keamanan
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect('/login');
     }
 }

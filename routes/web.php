@@ -110,4 +110,22 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 
+    // =====================================================================
+    // GROUP KHUSUS ORANG TUA (Prefix URL: /orangtua/...)
+    // =====================================================================
+    Route::prefix('orangtua')->group(function () {
+        
+        // 1. MANAJEMEN DATA ANAK (View)
+        Route::get('/anak/{id}', [ChildController::class, 'show'])->name('ortu.anak.show');
+        // 2. MANAJEMEN KEHAMILAN
+        Route::get('/kehamilan', [PregnancyController::class, 'index'])->name('ortu.kehamilan.index');
+        Route::get('/kehamilan/tambah', [PregnancyController::class, 'create'])->name('ortu.kehamilan.create');
+        Route::post('/kehamilan/simpan', [PregnancyController::class, 'store'])->name('ortu.kehamilan.store');
+        
+        // 3. KONTEN EDUKASI (Detail Artikel - Opsional)
+        Route::get('/edukasi/{slug}', function($slug){
+            return view('edukasi.show', compact('slug'));
+        })->name('edukasi.show');
+    });
+
 });
