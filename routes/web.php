@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PregnancyController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ImmunizationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -76,6 +77,10 @@ Route::middleware('auth')->group(function () {
             // Detail & Fitur Tumbuh Kembang
             Route::get('/{id}', [ChildController::class, 'show'])->name('anak.show');
             Route::post('/tumbuh-kembang', [ChildController::class, 'storeGrowth'])->name('anak.growth.store');
+
+            // Imunisasi
+            Route::post('/imunisasi/simpan', [ImmunizationController::class, 'store'])->name('imunisasi.store');
+            Route::delete('/imunisasi/{id}', [ImmunizationController::class, 'destroy'])->name('imunisasi.destroy');
 
             // Hapus Anak
             Route::delete('/{id}', [ChildController::class, 'destroy'])->name('anak.destroy');

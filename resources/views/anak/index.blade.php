@@ -6,7 +6,7 @@
         {{-- HEADER & SEARCH --}}
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-5 gap-3">
             <div>
-                <h3 class="fw-bold text-dark mb-1">Data Tumbuh Kembang</h3>
+                <h3 class="fw-bold text-dark mb-1">Data Anak</h3>
                 <p class="text-secondary mb-0">Total {{ count($children) }} anak terdaftar dalam sistem.</p>
             </div>
 
@@ -87,7 +87,7 @@
                                 </small>
                                 <a href="{{ route('anak.show', $child->id) }}"
                                     class="btn btn-sm btn-outline-success rounded-pill px-3 fw-bold">
-                                    Detail & Grafik
+                                    Detail
                                 </a>
                             </div>
                         </div>

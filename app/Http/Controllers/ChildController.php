@@ -35,7 +35,20 @@ class ChildController extends Controller
         // (Ini kuncinya: kita butuh ID dari anak yang baru dibuat)
         $child = Child::create($validatedData);
 
-        // 3. Redirect langsung ke halaman Detail Anak ($child->id)
+        // 3. OTOMATISASI: Cek apakah ada data kelahiran?
+        // Jika Berat Lahir DAN Tinggi Lahir diisi, masukkan ke riwayat pertumbuhan
+        if ($request->filled('berat_lahir') && $request->filled('tinggi_lahir')) {
+            ChildGrowth::create([
+                'child_id'            => $child->id,
+                'tanggal'             => $request->tgl_lahir, // Tanggalnya = Tanggal Lahir
+                'berat_badan'         => $request->berat_lahir,
+                'tinggi_badan'        => $request->tinggi_lahir,
+                'lingkar_kepala'      => null,
+                'catatan'             => 'Data pengukuran saat lahir (Otomatis)',
+            ]);
+        }
+
+        // 4. Redirect langsung ke halaman Detail Anak ($child->id)
         return redirect()->route('anak.show', $child->id)
             ->with('success', 'Data anak berhasil dibuat! Silakan mulai mencatat pertumbuhan.');
     }

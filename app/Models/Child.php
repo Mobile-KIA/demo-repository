@@ -33,4 +33,9 @@ class Child extends Model
         // Hasil contoh: "2 tahun 3 bulan" (format tergantung setting locale Carbon)
         return Carbon::parse($this->tgl_lahir)->diffForHumans(null, true);
     }
+
+    public function immunizations()
+    {
+        return $this->hasMany(Immunization::class)->latest('tanggal_imunisasi');
+    }
 }
