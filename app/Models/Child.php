@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 
 class Child extends Model
 {
@@ -20,11 +20,17 @@ class Child extends Model
         return $this->belongsTo(Patient::class);
     }
 
+    public function growths()
+    {
+        // Kita urutkan dari yang terbaru (agar data terakhir muncul paling atas)
+        return $this->hasMany(ChildGrowth::class)->latest('tanggal');
+    }
+
     // Fitur Tambahan: Menghitung Usia Otomatis
     // Cara panggil di view: $child->usia
     public function getUsiaAttribute()
     {
         // Hasil contoh: "2 tahun 3 bulan" (format tergantung setting locale Carbon)
-        return Carbon::parse($this->tgl_lahir)->diffForHumans(null, true); 
+        return Carbon::parse($this->tgl_lahir)->diffForHumans(null, true);
     }
 }
