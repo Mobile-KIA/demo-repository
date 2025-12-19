@@ -16,12 +16,18 @@ class Patient extends Model
         'nik',
         'umur',
         'alamat',
-        'no_telp'
+        'no_telp',
     ];
 
     public function kehamilans()
     {
         return $this->hasMany(Pregnancy::class, 'patient_id')
-                    ->orderBy('created_at', 'desc');
+            ->orderBy('created_at', 'desc');
+    }
+
+    // Relasi: Pasien (Ibu) memiliki banyak Anak
+    public function children()
+    {
+        return $this->hasMany(Child::class);
     }
 }

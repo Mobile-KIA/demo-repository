@@ -64,6 +64,47 @@
             </div>
         </div>
 
+        <div class="mb-5">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold border-start border-4 border-success ps-3 mb-0">Data Tumbuh Kembang Anak</h5>
+                <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3" data-bs-toggle="modal"
+                    data-bs-target="#modalTambahAnak">
+                    <i class="bi bi-plus-lg me-1"></i> Tambah Anak
+                </button>
+            </div>
+
+            <div class="row g-3">
+                @forelse($patient->children as $child)
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card border-0 shadow-sm rounded-3 h-100">
+                            <div class="card-body p-3 d-flex align-items-center">
+                                <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 me-3"
+                                    style="width: 50px; height: 50px;">
+                                    <i class="bi bi-emoji-smile fs-3"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-bold mb-0 text-dark">{{ $child->nama }}</h6>
+                                    <small class="text-muted d-block">
+                                        {{ $child->usia }} • {{ $child->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}
+                                    </small>
+                                </div>
+                                <a href="{{ route( $child->id) }}"
+                                    class="btn btn-sm btn-light border rounded-circle" title="Lihat Detail">
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-12">
+                        <div class="alert alert-light border text-center text-muted small py-3 mb-0">
+                            Belum ada data anak yang terdaftar.
+                        </div>
+                    </div>
+                @endforelse
+            </div>
+        </div>
+
         {{-- 3. DAFTAR RIWAYAT PEMERIKSAAN --}}
         <h5 class="fw-bold mb-3 border-start border-4 border-primary ps-3">Riwayat Kehamilan</h5>
 

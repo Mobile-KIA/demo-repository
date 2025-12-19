@@ -69,6 +69,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}/edit', [PatientController::class, 'edit'])->name('pasien.edit');
         Route::post('/{id}/update', [PatientController::class, 'update'])->name('pasien.update');
         Route::delete('/{id}', [PatientController::class, 'destroy'])->name('pasien.destroy');
+        Route::post('/anak/simpan', [App\Http\Controllers\ChildController::class, 'store'])->name('anak.store');
     });
 
     /*
