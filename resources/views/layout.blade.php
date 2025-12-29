@@ -285,7 +285,7 @@
                         <i class="bi bi-grid-1x2-fill"></i> <span class="sidebar-text ms-3">Dashboard</span>
                     </a>
 
-                    @if(auth()->user()->role == 'Tenaga Medis')
+                    @if (auth()->user()->role == 'Tenaga Medis')
                         <div class="small text-uppercase px-4 mt-4 mb-2 menu-header">Pasien</div>
                         <a href="{{ route('pasien.index') }}"
                             class="list-group-item {{ request()->is('pasien*') ? 'active' : '' }}">
@@ -302,7 +302,7 @@
                                 class="sidebar-text ms-3">Edukasi</span></a>
                     @endif
 
-                    @if(auth()->user()->role == 'Orang Tua')
+                    @if (auth()->user()->role == 'Orang Tua')
                         <div class="small text-uppercase px-4 mt-4 mb-2 menu-header">Menu Bunda</div>
                         <a href="#" class="list-group-item"><i class="bi bi-clipboard-heart"></i> <span
                                 class="sidebar-text ms-3">Kesehatan Saya</span></a>
@@ -394,7 +394,7 @@
             // 2. FITUR BARU: AUTO OPEN SAAT KLIK PROFILE
             // ---------------------------------------------------------
             const profileTrigger = document.querySelector('.profile-card');
-            
+
             if (profileTrigger && wrapper) {
                 profileTrigger.addEventListener('click', function() {
                     // Cek: Apakah sidebar sedang mengecil (ada class 'toggled')?
@@ -410,15 +410,16 @@
             // 3. LOGIC MOBILE: AUTO CLOSE SAAT KLIK MENU
             const isMobile = window.innerWidth <= 768;
             const menuLinks = document.querySelectorAll('.list-group-item');
-            
-            if(isMobile) {
+
+            if (isMobile) {
                 menuLinks.forEach(link => {
                     link.addEventListener('click', () => {
-                         if(wrapper.classList.contains('toggled')) {
-                             wrapper.classList.remove('toggled'); // Di mobile logicnya terbalik (toggled = open)
-                         } else {
-                             // Jika di desktop logicnya beda, sesuaikan jika perlu
-                         }
+                        if (wrapper.classList.contains('toggled')) {
+                            wrapper.classList.remove(
+                                'toggled'); // Di mobile logicnya terbalik (toggled = open)
+                        } else {
+                            // Jika di desktop logicnya beda, sesuaikan jika perlu
+                        }
                     });
                 });
             }
