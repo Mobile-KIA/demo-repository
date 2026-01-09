@@ -1,12 +1,14 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChildController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ImmunizationController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PregnancyController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ImmunizationController;
+use App\Http\Controllers\VisitScheduleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,8 +51,8 @@ Route::middleware('auth')->group(function () {
 
         // 1. MENU UTAMA REKAM MEDIS
         Route::get('/rekam-medis', function () {
-            return view('rm.index');
-        })->name('rm.index');
+            return view('rm.index'); 
+        })->name('rekam_medis.index');
 
         // 2. MANAJEMEN PASIEN (IBU)
         Route::prefix('pasien')->group(function () {
@@ -103,6 +105,27 @@ Route::middleware('auth')->group(function () {
             Route::delete('/{id}', [PregnancyController::class, 'destroy'])->name('kehamilan.destroy');
         });
 
+        // 5. MANAJEMEN JADWAL KUNJUNGAN
+        Route::prefix('jadwal')->group(function () {
+            // Daftar Jadwal Kunjungan
+            Route::get('/', [VisitScheduleController::class, 'index'])->name('jadwal.index');
+
+            // Tambah Data
+            Route::get('/tambah', [VisitScheduleController::class, 'create'])->name('jadwal.create'); // Form Tambah
+            Route::post('/simpan', [VisitScheduleController::class, 'store'])->name('jadwal.store');
+
+            // Update Status (Selesai/Batal)
+            Route::patch('/{id}/status', [VisitScheduleController::class, 'updateStatus'])->name('jadwal.update');
+
+            // edit
+            Route::get('/{id}/edit', [VisitScheduleController::class, 'edit'])->name('jadwal.edit'); // <--- INI YG HILANG
+        });
+
+        // 6. MANAJEMEN ARTIKEL
+        Route::prefix('medis')->group(function () {
+        Route::resource('artikel', App\Http\Controllers\ArticleController::class)->except(['show']);
+    });
+
     }); // End Group Medis
 
     // --- ROUTE PROFILE (UMUM) ---
@@ -114,18 +137,15 @@ Route::middleware('auth')->group(function () {
     // GROUP KHUSUS ORANG TUA (Prefix URL: /orangtua/...)
     // =====================================================================
     Route::prefix('orangtua')->group(function () {
-        
+
         // 1. MANAJEMEN DATA ANAK (View)
         Route::get('/anak/{id}', [ChildController::class, 'show'])->name('ortu.anak.show');
         // 2. MANAJEMEN KEHAMILAN
         Route::get('/kehamilan', [PregnancyController::class, 'index'])->name('ortu.kehamilan.index');
         Route::get('/kehamilan/tambah', [PregnancyController::class, 'create'])->name('ortu.kehamilan.create');
         Route::post('/kehamilan/simpan', [PregnancyController::class, 'store'])->name('ortu.kehamilan.store');
-        
-        // 3. KONTEN EDUKASI (Detail Artikel - Opsional)
-        Route::get('/edukasi/{slug}', function($slug){
-            return view('edukasi.show', compact('slug'));
-        })->name('edukasi.show');
-    });
 
+        // 3. KONTEN EDUKASI (Detail Artikel - Opsional)
+        Route::get('/artikel/{slug}', [App\Http\Controllers\ArticleController::class, 'show'])->name('artikel.baca');
+    });
 });

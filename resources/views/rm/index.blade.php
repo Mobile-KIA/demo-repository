@@ -1,88 +1,68 @@
 @extends('layout')
 
 @section('content')
-    <div class="container-fluid p-4">
+    {{-- Container Fluid agar Penuh Layar --}}
+    <div class="container-fluid px-4 py-5">
 
-        {{-- HEADER SIMPEL --}}
-        <div class="mb-5">
-            <h3 class="fw-bold text-dark">Rekam Medis</h3>
-            <p class="text-secondary">Pilih kategori layanan untuk melihat daftar pasien terkait.</p>
+        {{-- HEADER TENGAH --}}
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-dark display-6">Menu Rekam Medis</h2>
+            <p class="text-muted">Akses data kesehatan ibu dan anak dalam satu pintu.</p>
         </div>
 
-        <div class="row g-4">
+        <div class="row g-4 justify-content-center">
 
-            {{-- 1. KEHAMILAN (Link ke Daftar IBU) --}}
-            <div class="col-md-6 col-xl-4">
-                {{-- UPDATE LINK DISINI: Ke pasien.index --}}
-                <a href="{{ route('pasien.index') }}" class="text-decoration-none card-hover-effect">
-                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
-                        <div class="card-body p-4 d-flex flex-column">
-
-                            <div class="d-flex justify-content-between align-items-start mb-4">
-                                <div
-                                    class="icon-shape bg-danger bg-opacity-10 text-danger rounded-3 d-flex align-items-center justify-content-center">
-                                    <i class="bi bi-person-pregnant fs-3"></i>
-                                </div>
-                                <div class="action-icon text-muted opacity-50">
-                                    <i class="bi bi-arrow-right fs-4"></i>
-                                </div>
+            {{-- 1. IBU HAMIL (Warna Merah/Pink) --}}
+            <div class="col-md-6 col-lg-4">
+                <a href="{{ route('pasien.index') }}" class="text-decoration-none">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 text-center hover-card p-4">
+                        <div class="card-body">
+                            <div>
+                                <img src="https://img.icons8.com/color/96/pregnant.png" alt="Ibu Hamil"
+                                    class="img-fluid" style="height: 120px; width: auto;">
                             </div>
 
-                            <h5 class="fw-bold text-dark mb-2">Kehamilan</h5>
+                            <h4 class="fw-bold text-dark mb-2">Ibu Hamil</h4>
                             <p class="text-muted small mb-0">
-                                Masuk ke daftar <strong>Ibu Hamil</strong> untuk pemeriksaan ANC dan riwayat kehamilan.
+                                Data pemeriksaan kehamilan (ANC), riwayat nifas, dan kondisi ibu.
                             </p>
                         </div>
                     </div>
                 </a>
             </div>
 
-            {{-- 2. TUMBUH KEMBANG (Link ke Daftar ANAK) --}}
-            <div class="col-md-6 col-xl-4">
-                {{-- UPDATE LINK DISINI: Ke anak.index --}}
-                <a href="{{ route('anak.index') }}" class="text-decoration-none card-hover-effect">
-                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
-                        <div class="card-body p-4 d-flex flex-column">
-
-                            <div class="d-flex justify-content-between align-items-start mb-4">
-                                <div
-                                    class="icon-shape bg-success bg-opacity-10 text-success rounded-3 d-flex align-items-center justify-content-center">
-                                    <i class="bi bi-flower1 fs-3"></i>
-                                </div>
-                                <div class="action-icon text-muted opacity-50">
-                                    <i class="bi bi-arrow-right fs-4"></i>
-                                </div>
+            {{-- 2. TUMBUH KEMBANG (Warna Hijau) --}}
+            <div class="col-md-6 col-lg-4">
+                <a href="{{ route('anak.index') }}" class="text-decoration-none">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 text-center hover-card p-4">
+                        <div class="card-body">
+                            {{-- LOGO BESAR --}}
+                            <div class="icon-circle bg-success bg-opacity-10 text-success mx-auto mb-4">
+                                <i class="bi bi-graph-up-arrow display-4"></i>
                             </div>
 
-                            <h5 class="fw-bold text-dark mb-2">Tumbuh Kembang</h5>
+                            <h4 class="fw-bold text-dark mb-2">Tumbuh Kembang</h4>
                             <p class="text-muted small mb-0">
-                                Masuk ke daftar <strong>Data Anak</strong> untuk memantau grafik pertumbuhan (BB/TB).
+                                Grafik pertumbuhan anak, pengukuran berat & tinggi badan berkala.
                             </p>
                         </div>
                     </div>
                 </a>
             </div>
 
-            {{-- 3. IMUNISASI (Link ke Daftar ANAK juga) --}}
-            <div class="col-md-6 col-xl-4">
-                {{-- UPDATE LINK DISINI: Ke anak.index (Karena imunisasi data anak) --}}
-                <a href="{{ route('anak.index') }}" class="text-decoration-none card-hover-effect">
-                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
-                        <div class="card-body p-4 d-flex flex-column">
-
-                            <div class="d-flex justify-content-between align-items-start mb-4">
-                                <div
-                                    class="icon-shape bg-info bg-opacity-10 text-info rounded-3 d-flex align-items-center justify-content-center">
-                                    <i class="bi bi-shield-check fs-3"></i>
-                                </div>
-                                <div class="action-icon text-muted opacity-50">
-                                    <i class="bi bi-arrow-right fs-4"></i>
-                                </div>
+            {{-- 3. IMUNISASI (Warna Biru) --}}
+            <div class="col-md-6 col-lg-4">
+                <a href="{{ route('anak.index') }}" class="text-decoration-none">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 text-center hover-card p-4">
+                        <div class="card-body">
+                            {{-- LOGO BESAR --}}
+                            <div class="icon-circle bg-info bg-opacity-10 text-info mx-auto mb-4">
+                                <i class="bi bi-shield-check display-4"></i>
                             </div>
 
-                            <h5 class="fw-bold text-dark mb-2">Imunisasi</h5>
+                            <h4 class="fw-bold text-dark mb-2">Imunisasi</h4>
                             <p class="text-muted small mb-0">
-                                Masuk ke daftar <strong>Data Anak</strong> untuk mencatat jadwal dan riwayat vaksinasi.
+                                Jadwal vaksinasi, riwayat suntik, dan jenis vaksin anak.
                             </p>
                         </div>
                     </div>
@@ -93,29 +73,31 @@
     </div>
 
     <style>
-        /* Ukuran Ikon Kotak */
-        .icon-shape {
-            width: 56px;
-            height: 56px;
+        /* Styling Lingkaran Logo */
+        .icon-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: all 0.3s ease;
         }
 
-        /* Animasi Hover Card */
-        .card-hover-effect .card {
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        /* Efek Hover Halus */
+        .hover-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .card-hover-effect:hover .card {
-            transform: translateY(-5px);
-            box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, 0.08) !important;
+        .hover-card:hover {
+            transform: translateY(-10px);
+            /* Naik sedikit saat dihover */
+            box-shadow: 0 1rem 3rem rgba(0, 0, 0, .1) !important;
         }
 
-        /* Animasi Panah Bergeser saat Hover */
-        .card-hover-effect:hover .action-icon {
-            color: var(--bs-primary) !important;
-            opacity: 1 !important;
-            transform: translateX(5px);
-            transition: transform 0.3s ease;
+        /* Saat dihover, icon membesar sedikit */
+        .hover-card:hover .icon-circle {
+            transform: scale(1.1);
         }
     </style>
 @endsection

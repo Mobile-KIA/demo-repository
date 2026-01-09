@@ -17,7 +17,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h3 class="fw-bold mb-1">Dashboard Medis</h3>
-                <p class="text-body-secondary mb-0">Selamat datang, {{ auth()->user()->name }} 👋</p>
+                <p class="text-body-secondary mb-0">Selamat datang, {{ auth()->user()->name }}</p>
             </div>
             <div>
                 <a href="{{ route('pasien.create') }}" class="btn btn-primary">
@@ -196,11 +196,10 @@
                         <i class="bi bi-info-circle position-absolute top-0 end-0 mt-n2 me-n2 text-white opacity-25"
                             style="font-size: 8rem;"></i>
 
-                        <h5 class="fw-bold position-relative z-1">Panduan KIA</h5>
+                        <h5 class="fw-bold position-relative z-1">Edukasi</h5>
                         <p class="small opacity-75 position-relative z-1">Pastikan selalu mengecek tekanan darah dan kadar
                             Hemoglobin pada trimester ketiga.</p>
-                        <button class="btn btn-sm btn-light text-primary fw-bold position-relative z-1">Baca
-                            Panduan</button>
+                        <button class="btn btn-sm btn-light text-primary fw-bold position-relative z-1">Baca Edukasi</button>
                     </div>
                 </div>
             </div>
